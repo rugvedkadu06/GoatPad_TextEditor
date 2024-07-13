@@ -1,7 +1,7 @@
-#GoatPad - Text Editor
+# GoatPad - Text Editor
 GoatPad is a simple text editor built using Python's Tkinter library. It provides basic functionality for creating, opening, editing, and saving text files.
 
-#Features
+# Features
 File Operations: New, Open, Save, Save As, and Exit.
 Edit Operations: Cut, Copy, Paste, Undo, and Redo.
 Format Options: Change Font Size and Font Family.
@@ -16,7 +16,7 @@ tkinter: Standard Python interface to the Tk GUI toolkit.
 
 webbrowser: Standard Python library for opening URLs in a browser.
 
-#Feedback and Support
+# Feedback and Support
 For assistance or feedback regarding GoatPad, please email us at:
 
 rugveddevmain@gmail.com
