@@ -10,7 +10,7 @@ class TextEditor:
         self.root.iconbitmap('logo.ico')
 
         self.text = tk.Text(self.root, wrap='word')
-        self.text.pack(side= 'left' , expand=1 , fill='both')
+        self.text.pack(side= 'left' , expand=True, fill='both')
 
         self.scrollbar = tk.Scrollbar(frame, command=self.text.yview)
         self.scrollbar.pack(side='right', fill='y')
@@ -73,7 +73,7 @@ class TextEditor:
 
         self.root.bind('<Control-n>', lambda event: self.new_file())
         self.root.bind('<Control-o>', lambda event: self.open_file())
-        self.root.bind('<Control-s>', lambda event: self.save_file())
+        self.root.bind('<Control-s>', lambda event: self.save_as_file())
         self.root.bind('<Control-Shift-S>', lambda event: self.save_as_file())
         self.root.bind('<Control-x>', lambda event: self.cut())
         self.root.bind('<Control-c>', lambda event: self.copy())
@@ -81,9 +81,10 @@ class TextEditor:
         self.root.bind('<Control-z>', lambda event: self.undo())
         self.root.bind('<Control-y>', lambda event: self.redo())
 
-        # Initialize file name
+
         self.file_name = "Untitled"
 
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
     def new_file(self):
         self.text.delete(1.0, tk.END)
         self.file_name = "Untitled"
@@ -154,11 +155,15 @@ class TextEditor:
         self.text.event_generate("<<Redo>>")
 
     def about(self):
-        webbrowser.open("mailto:rugveddevmain@gmail.com?cc=rdevscorps@gmail.com&subject=Assistance%20with%20GoatPad")
+        webbrowser.open("https://github.com/rugved281/GoatPad---TextEditor")
     def feedback(self):
         webbrowser.open("mailto:rugveddevmain@gmail.com?cc=rdevscorps@gmail.com&subject=Feedback%20About%20GoatPad")
     def open_help(self):
         webbrowser.open("mailto:rugveddevmain@gmail.com?cc=rdevscorps@gmail.com&subject=Assistance%20with%20GoadPad")
+
+    def on_close(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            self.root.destroy()
 
 if __name__ == "__main__":
     print("Program is running...")
