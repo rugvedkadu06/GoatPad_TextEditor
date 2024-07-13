@@ -12,7 +12,9 @@ To run GoatPad, ensure you have Python installed. The application uses the follo
 
 tkinter: Standard Python interface to the Tk GUI toolkit.
 
-```pip install tk```
+```
+pip install tk
+```
 
 webbrowser: Standard Python library for opening URLs in a browser.
 
