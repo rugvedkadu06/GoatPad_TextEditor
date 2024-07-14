@@ -15,7 +15,11 @@ tkinter: Standard Python interface to the Tk GUI toolkit.
 ```
 pip install tk
 ```
+customtkinter: Standard Python interface to the Tk GUI toolkit.
 
+```
+pip install customtkinter==5.2.2
+```
 webbrowser: Standard Python library for opening URLs in a browser.
 
 # Feedback and Support
