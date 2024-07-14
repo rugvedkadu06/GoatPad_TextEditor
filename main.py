@@ -1,21 +1,29 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import webbrowser
+import customtkinter as ctk
+
 
 class TextEditor:
-    def __init__(self, root, family=None, frame=None):
+    def __init__(self, root, family=None, frame=None, size=None):
         self.file_name = "Untitled"
         self.root = root
         self.root.title(f"{self.file_name} - GoatPad")
         self.root.iconbitmap('logo.ico')
+        ctk.set_appearance_mode("light")
+        ctk.set_default_color_theme("dark-blue")
 
-        self.text = tk.Text(self.root, wrap='word')
-        self.text.pack(side= 'left' , expand=True, fill='both')
+        # Create a frame to contain the text widget and scrollbar
+        self.main_frame = tk.Frame(self.root)
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
 
-        self.scrollbar = tk.Scrollbar(frame, command=self.text.yview)
+        self.text = ctk.CTkTextbox(self.main_frame, wrap='word')
+        self.text.pack(side='left', fill='both', expand=True)
+
+        self.scrollbar = ctk.CTkScrollbar(self.main_frame, command=self.text.yview)
         self.scrollbar.pack(side='right', fill='y')
         self.text.configure(yscrollcommand=self.scrollbar.set)
-        
+
         self.current_font_family = "Arial"
         self.current_font_size = 12
         self.text.configure(font=(self.current_font_family, self.current_font_size))
@@ -47,22 +55,22 @@ class TextEditor:
         self.font_size_menu = tk.Menu(self.format_menu, tearoff=0)
         self.format_menu.add_cascade(label="Font Size", menu=self.font_size_menu)
         for size in range(8, 30, 2):
-            self.font_size_menu.add_command(label=str(size), command=lambda size= size: self.change_font_size(size))
-
+            self.font_size_menu.add_command(label=str(size), command=lambda size=size: self.change_font_size(size))
 
         self.font_family_menu = tk.Menu(self.format_menu, tearoff=0)
         self.format_menu.add_cascade(label="Font Family", menu=self.font_family_menu)
         font_families = ["Arial", "Courier", "Helvetica", "Times New Roman", "Verdana"]
         for family in font_families:
             self.font_family_menu.add_command(label=family,
-                                              command=lambda family= family: self.change_font_family(family))
-
+                                              command=lambda family=family: self.change_font_family(family))
 
         self.view_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.menu_bar.add_cascade(label="View", menu=self.view_menu)
         self.view_menu.add_command(label="Zoom In", command=self.zoom_in)
         self.view_menu.add_command(label="Zoom Out", command=self.zoom_out)
         self.view_menu.add_command(label="Restore Default Zoom", command=self.restore)
+        self.view_menu.add_separator()
+        self.view_menu.add_command(label="Toggle Light/Dark Mode", command=self.toggle_mode)
 
         self.help_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.menu_bar.add_cascade(label="Help", menu=self.help_menu)
@@ -81,10 +89,11 @@ class TextEditor:
         self.root.bind('<Control-z>', lambda event: self.undo())
         self.root.bind('<Control-y>', lambda event: self.redo())
 
-
         self.file_name = "Untitled"
+        self.is_dark_mode = False
 
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+
     def new_file(self):
         self.text.delete(1.0, tk.END)
         self.file_name = "Untitled"
@@ -116,7 +125,7 @@ class TextEditor:
                 content = self.text.get(1.0, tk.END)
                 file.write(content)
                 self.file_name = file_path
-                self.root.title(f"{self.file_name}- GoatPad")
+                self.root.title(f"{self.file_name} - GoatPad")
 
     def zoom_in(self):
         self.current_font_size += 2
@@ -128,9 +137,9 @@ class TextEditor:
             self.text.configure(font=(self.current_font_family, self.current_font_size))
 
     def restore(self):
-        if self.current_font_size > 2:
-            self.current_font_size -= 2
-            self.text.configure(font=(self.current_font_family, self.current_font_size))
+        self.current_font_size = 12
+        self.text.configure(font=(self.current_font_family, self.current_font_size))
+
     def change_font_size(self, size):
         self.current_font_size = size
         self.text.configure(font=(self.current_font_family, self.current_font_size))
@@ -156,8 +165,10 @@ class TextEditor:
 
     def about(self):
         webbrowser.open("https://github.com/rugved281/GoatPad---TextEditor")
+
     def feedback(self):
         webbrowser.open("mailto:rugveddevmain@gmail.com?cc=rdevscorps@gmail.com&subject=Feedback%20About%20GoatPad")
+
     def open_help(self):
         webbrowser.open("mailto:rugveddevmain@gmail.com?cc=rdevscorps@gmail.com&subject=Assistance%20with%20GoadPad")
 
@@ -165,8 +176,21 @@ class TextEditor:
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             self.root.destroy()
 
+    def light_mode(self):
+        ctk.set_appearance_mode("light")
+
+    def dark_mode(self):
+        ctk.set_appearance_mode("dark")
+
+    def toggle_mode(self):
+        if self.is_dark_mode:
+            self.light_mode()
+        else:
+            self.dark_mode()
+        self.is_dark_mode = not self.is_dark_mode
+
+
 if __name__ == "__main__":
-    print("Program is running...")
-    root = tk.Tk()
+    root = ctk.CTk()
     app = TextEditor(root)
     root.mainloop()
