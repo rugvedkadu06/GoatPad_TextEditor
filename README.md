@@ -15,7 +15,7 @@ tkinter: Standard Python interface to the Tk GUI toolkit.
 ```
 pip install tk
 ```
-customtkinter: Standard Python interface to the Tk GUI toolkit.
+customtkinter: A custom version of Tkinter for enhanced appearance.
 
 ```
 pip install customtkinter==5.2.2
